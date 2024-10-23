@@ -4,6 +4,20 @@
 #include "Rating.h"
 #include <iostream>
 
+Administrator::Administrator(const string& name,
+    int age,
+    const string& surname,
+    const string& middlename,
+    const string& birthDate,
+    const string& email)
+    : Person(name, age, surname, middlename, birthDate), // Виклик конструктора базового класу Person
+    User(email) { // Виклик конструктора базового класу User
+}
+
+Administrator::~Administrator()
+{
+    cout << "Administrator's " << name << " destructor" << endl;
+}
 void Administrator::addPublication(const Publication& publication, std::vector<Publication>& publications) {
     publications.push_back(publication);
     std::cout << "Публікація \"" << publication.getTitle() << "\" додана." << std::endl;
@@ -34,6 +48,23 @@ void Administrator::checkPendingOrders(const std::vector<Order>& orders, std::ve
     }
 }
 
+void Administrator::viewPublications(const std::vector<Publication>& publications) {
+    std::cout << "Список публікацій:" << std::endl;
+    for (const auto& publication : publications) {
+        std::cout << "- Назва: " << publication.getTitle()
+            << ", Автор: " << publication.getAuthor()
+            << ", Ціна: " << publication.getPrice() << std::endl;
+    }
+}
+
+void Administrator::viewReaders(const std::vector<Reader>& readers) {
+    std::cout << "Список читачів:" << std::endl;
+    for (const auto& reader : readers) {
+        std::cout << "- Ім'я: " << reader.getName()
+            << ", Баланс: " << reader.getBalance()
+            << ", Днів підписки залишилось: " << reader.getSubscriptionDaysLeft() << std::endl;
+    }
+}
 
 //void Administrator::notifyPendingOrders(const std::vector<Order>& orders, int daysLimit) {
 //    std::time_t now = std::time(nullptr);
@@ -61,21 +92,3 @@ void Administrator::checkPendingOrders(const std::vector<Order>& orders, std::ve
 //        }
 //    }
 //}
-
-void Administrator::viewPublications(const std::vector<Publication>& publications) {
-    std::cout << "Список публікацій:" << std::endl;
-    for (const auto& publication : publications) {
-        std::cout << "- Назва: " << publication.getTitle()
-            << ", Автор: " << publication.getAuthor()
-            << ", Ціна: " << publication.getPrice() << std::endl;
-    }
-}
-
-void Administrator::viewReaders(const std::vector<Reader>& readers) {
-    std::cout << "Список читачів:" << std::endl;
-    for (const auto& reader : readers) {
-        std::cout << "- Ім'я: " << reader.getName()
-            << ", Баланс: " << reader.getBalance()
-            << ", Днів підписки залишилось: " << reader.getSubscriptionDaysLeft() << std::endl;
-    }
-}

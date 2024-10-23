@@ -63,45 +63,28 @@ void Publication::addRating(const Rating& rating) {
 vector<Rating> Publication::getRatings() const {
     return ratings;
 }
-////отримання середнього рейтингу
-//double Publication::getAverageRating() const {
-//    if (ratings.empty()) return 0.0;
-//    double sum = 0.0;
-//    for (int rating : ratings) {
-//        sum += rating;
-//    }
-//    return sum / ratings.size();
-//}
-//
-////методи для відгуків
-//void Publication::addFeedback(string feedback) {
-//    this->feedback = feedback;
-//}
-//void Publication::addFeedback(string feedback, int rating) {
-//    this->feedback = feedback;
-//    this->addRating(rating);
-//}
+
 
 //метод що повертає тип класу 
 Publication Publication::getCopy() const {
     return *this;
 }
 
-//void Publication::writeAllToFile(const vector<Publication>& publications, const string& filename) {
-//    ofstream outFile(filename, ios::trunc); // Відкриваємо файл в режимі перезапису
-//    if (outFile) {
-//        for (const auto& publication : publications) {
-//            outFile << publication.getTitle() << "\n"
-//                << publication.getPrice() << "\n"
-//                << publication.getSubscriptionPeriod() << "\n"
-//                << publication.getGenre();
-//        }
-//    }
-//    else {
-//        cerr << "Error opening file for writing." << endl;
-//    }
-//}
-//
+void Publication::writeAllToFile(const vector<Publication>& publications, const string& filename) {
+    ofstream outFile(filename, ios::trunc); // Відкриваємо файл в режимі перезапису
+    if (outFile) {
+        for (const auto& publication : publications) {
+            outFile << publication.getTitle() << "\n"
+                << publication.getPrice() << "\n"
+                << publication.getSubscriptionPeriod() << "\n";
+                
+        }
+    }
+    else {
+        cerr << "Error opening file for writing." << endl;
+    }
+}
+
 //vector<Publication> Publication::readAllFromFile(const string& filename) {
 //    vector<Publication> publications;
 //    ifstream inFile(filename);
@@ -111,14 +94,14 @@ Publication Publication::getCopy() const {
 //            string title;
 //            double price;
 //            int subscriptionPeriod;
-//            string genre;
+//            
 //
 //            if (!getline(inFile, title)) break; // Зчитуємо назву
 //            inFile >> price >> subscriptionPeriod;
 //            inFile.ignore(); // Ігноруємо символ нового рядка після зчитування
-//            getline(inFile, genre);
+//            
 //
-//            publications.emplace_back(title, price, subscriptionPeriod, new string(genre));
+//            publications.emplace_back(title, price, subscriptionPeriod);
 //        }
 //        inFile.close();
 //    }
@@ -134,8 +117,8 @@ int Publication::getTotalPublications(){
 
 // Реалізація статичного методу для створення нового видання
 //оголосити функцію типу описаного класу, яка повертатиме об’єкт класу. Функція оперує з методами, наявними в класі.
-Publication Publication::createPublication(string* title, double price, int subscriptionPeriod, string* genre) {
-    return Publication(title, price, subscriptionPeriod, genre); // скорочений виклик конструктора
+Publication Publication::createPublication(const string& author,const string& title, double price, int subscriptionPeriod, string* genre) {
+    return Publication(author, title, price, subscriptionPeriod, genre); // скорочений виклик конструктора
 }
 
 

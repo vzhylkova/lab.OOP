@@ -1,3 +1,4 @@
+//#include "Person.h"
 #include "Reader.h"
 #include "Publication.h"
 #include "Rating.h"
@@ -7,28 +8,67 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+
 using namespace std;
 
 // Конструктор без параметрів
-Reader::Reader() 
-    : name("Unknown"), readerNumber(0), subscriptionDaysLeft(0), balance(0.0), discount(0.0), isBlacklisted(false), discountRate(0.0) {
-    totalReaders++;  
-}
+//Reader::Reader() 
+//    : name("Unknown"), readerNumber(0), subscriptionDaysLeft(0), balance(0.0), discount(0.0), isBlacklisted(false), discountRate(0.0) {
+//    totalReaders++;  
+//}
 // Конструктор з параметрами
-Reader::Reader(string name, int readerNumber, int subscriptionDaysLeft, double balance)
-    : name(name), readerNumber(readerNumber), subscriptionDaysLeft(subscriptionDaysLeft), balance(balance), discount(0.0), isBlacklisted(false), discountRate(0.0) {
-    totalReaders++;
-}
+//Reader::Reader(string name, int readerNumber, int subscriptionDaysLeft, double balance)
+//    : name(name), readerNumber(readerNumber), subscriptionDaysLeft(subscriptionDaysLeft), balance(balance), discount(0.0), isBlacklisted(false), discountRate(0.0) {
+//    totalReaders++;
+//}
 // Конструктор копіювання
-Reader::Reader(const Reader& other)
-    : name(other.name), readerNumber(other.readerNumber), subscriptionDaysLeft(other.subscriptionDaysLeft), balance(other.balance), discount(other.discount), isBlacklisted(other.isBlacklisted), discountRate(other.discountRate) {
-    totalReaders++;  
+//Reader::Reader(const Reader& other)
+//    : name(other.name), readerNumber(other.readerNumber), subscriptionDaysLeft(other.subscriptionDaysLeft), balance(other.balance), discount(other.discount), isBlacklisted(other.isBlacklisted), discountRate(other.discountRate) {
+//    totalReaders++;  
+//}
+
+// Конструктор без параметрів
+Reader::Reader()
+    : Person(),
+    User(),
+    readerNumber(0),
+    subscriptionDaysLeft(0), balance(0.0), discount(0.0), isBlacklisted(false) {
+    // Optionally initialize default values
 }
 
-//Методи для отримання інформації читача
-string Reader::getName() const {
-    return name;
+// Конструктор з параметрами
+Reader::Reader(const string& name,
+    int age,
+    const string& surname,
+    const string& middlename,
+    const string& birthDate,
+    const string& email,
+    int readerNumber,
+    int subscriptionDaysLeft,
+    double balance,
+    double discount,
+    bool isBlacklisted)
+    : Person(name, age, surname, middlename, birthDate), // Виклик конструктора базового класу Person
+    User(email), // Виклик конструктора базового класу User
+    readerNumber(readerNumber), // Ініціалізація readerNumber
+    subscriptionDaysLeft(subscriptionDaysLeft), // Ініціалізація subscriptionDaysLeft
+    balance(balance), // Ініціалізація balance
+    discount(discount), // Ініціалізація discount
+    isBlacklisted(isBlacklisted) { // Ініціалізація isBlacklisted
 }
+
+// Конструктор копіювання
+Reader::Reader(const Reader& other)
+    : Person(other), // Виклик конструктора базового класу Person
+    User(other), // Виклик конструктора базового класу User
+    readerNumber(other.readerNumber), // Копіювання readerNumber
+    subscriptionDaysLeft(other.subscriptionDaysLeft), // Копіювання subscriptionDaysLeft
+    balance(other.balance), // Копіювання balance
+    discount(other.discount), // Копіювання discount
+    isBlacklisted(other.isBlacklisted) { // Копіювання isBlacklisted
+    // Тіло конструктора може залишитися порожнім, якщо немає додаткової ініціалізації
+}
+
 double Reader::getBalance() const {
     return balance;
 }
@@ -87,7 +127,17 @@ void Reader::addRatingToPublication(Publication& publication, int score, const s
 }
 //Метод для оформлення замовлення на видання
 void Reader::placeOrder(Publication* publication) {
-    Order newOrder(this); // Створюємо нове замовлення
+    vector<Publication*> publications;
+    publications.push_back(publication); // Add the publication to the vector
+
+    // Set some default values or logic for the other parameters
+    string status = "Pending"; // Default status
+    bool isPaid = false; // Default payment status
+    int orderID = Order::getTotalOrders() + 1; // Assuming you're using a static counter for unique IDs
+    double totalPrice = publication->getPrice(); // Assume getPrice() returns the price of the publication
+
+    // Create a new order using the constructor
+    Order newOrder(status, publications, isPaid, this, orderID, totalPrice);
     newOrder.addPublication(publication); // Додаємо видання
     orders.push_back(newOrder); // Додаємо замовлення до списку
 }
@@ -125,43 +175,43 @@ bool Reader::isReaderBlacklisted() const {
 //    }
 //}
 
-void Reader::writeAllToFile(const vector<Reader>& readers, const string& filename) {
-    ofstream outFile(filename, ios::trunc);
-    if (outFile) {
-        for (const auto& reader : readers) {
-            outFile << reader.getName() << "\n"
-                << reader.readerNumber << "\n"
-                << reader.subscriptionDaysLeft << "\n"
-                << reader.balance << "\n";
-        }
-    }
-    else {
-        cerr << "Error opening file for writing." << endl;
-    }
-}
-vector<Reader> Reader::readAllFromFile(const string& filename) {
-    vector<Reader> readers;
-    ifstream inFile(filename);
-    if (inFile) {
-        while (true) {
-            string name;
-            int readerNumber;
-            int subscriptionDaysLeft;
-            double balance;
-
-            if (!getline(inFile, name)) break; // Зчитуємо ім'я
-            inFile >> readerNumber >> subscriptionDaysLeft >> balance;
-            inFile.ignore(); // Ігноруємо символ нового рядка після зчитування double
-
-            readers.emplace_back(name, readerNumber, subscriptionDaysLeft, balance);
-        }
-        inFile.close();
-    }
-    else {
-        cerr << "Помилка відкриття файлу для читання." << endl;
-    }
-    return readers;
-}
+//void Reader::writeAllToFile(const vector<Reader>& readers, const string& filename) {
+//    ofstream outFile(filename, ios::trunc);
+//    if (outFile) {
+//        for (const auto& reader : readers) {
+//            outFile << reader.getName() << "\n"
+//                << reader.readerNumber << "\n"
+//                << reader.subscriptionDaysLeft << "\n"
+//                << reader.balance << "\n";
+//        }
+//    }
+//    else {
+//        cerr << "Error opening file for writing." << endl;
+//    }
+//}
+//vector<Reader> Reader::readAllFromFile(const string& filename) {
+//    vector<Reader> readers;
+//    ifstream inFile(filename);
+//    if (inFile) {
+//        while (true) {
+//            string name;
+//            int readerNumber;
+//            int subscriptionDaysLeft;
+//            double balance;
+//
+//            if (!getline(inFile, name)) break; // Зчитуємо ім'я
+//            inFile >> readerNumber >> subscriptionDaysLeft >> balance;
+//            inFile.ignore(); // Ігноруємо символ нового рядка після зчитування double
+//
+//            readers.emplace_back(name, readerNumber, subscriptionDaysLeft, balance);
+//        }
+//        inFile.close();
+//    }
+//    else {
+//        cerr << "Помилка відкриття файлу для читання." << endl;
+//    }
+//    return readers;
+//}
 
 //int* Reader::generateAndSortRandomNumbers(int n) {
 //    int* randomNumbers = new int[n];  // Виділення динамічної пам'яті для масиву цілих чисел

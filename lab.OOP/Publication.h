@@ -41,19 +41,17 @@ public:
 	
 	// Додавання рейтингу до публікації через клас Rating
 	void addRating(const Rating& rating);
-	//vector<Rating> ratings;
-	//vector<Rating>& getRatings();// Метод для отримання всіх рейтингів
 	vector<Rating> getRatings() const;
 
 	/*double getAverageRating() const;
 	void addFeedback(string feedback);
 	void addFeedback(string feedback, int rating);*/
 	
-	//static void writeAllToFile(const vector<Publication>& publications, const string& filename);
+	static void writeAllToFile(const vector<Publication>& publications, const string& filename);
 	//static vector<Publication> readAllFromFile(const string& filename);
-	//
+	
 	// Функція для створення нового видання
-	static Publication createPublication(string* title, double price, int subscriptionPeriod, string* genre);
+	static Publication createPublication(const string& author,const string& title, double price, int subscriptionPeriod, string* genre);
 
 	~Publication();
 };

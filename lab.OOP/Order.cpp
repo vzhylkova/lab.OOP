@@ -4,13 +4,11 @@
 
 int Order::totalOrders = 0;
 
-// Конструктор за замовчуванням
-Order::Order() : reader(nullptr), totalPrice(0), isPaid(false) {
-    orderID = ++totalOrders;
-}
-// Конструктор з параметрами
-Order::Order(Reader* reader) : reader(reader), totalPrice(0), isPaid(false) {
-    orderID = ++totalOrders;
+Order::Order()
+    : status("Pending"), isPaid(false), reader(nullptr), orderID(0), totalPrice(0.0) {}
+
+Order::Order(const string& status, const vector<Publication*>& publications, bool isPaid,Reader* reader,int orderID,double totalPrice) 
+    : status(status), publications(publications), isPaid(isPaid), reader(reader) ,orderID(orderID),totalPrice(totalPrice){
 }
 
 // Додає видання до замовлення
@@ -18,7 +16,6 @@ void Order::addPublication(Publication* publication) {
     publications.push_back(publication);
     totalPrice += publication->getPrice(); // Оновлюємо загальну вартість замовлення
 }
-
 
 // Оплата замовлення
 void Order::payOrder() {
@@ -61,4 +58,17 @@ int Order::getTotalOrders() {
 
 Reader* Order::getReader() const {
     return reader;
+}
+
+string Order::getStatus() const {
+    return status;
+}
+
+void Order::setStatus(const string& newStatus) {
+    status = newStatus;
+}
+
+Order::~Order() {
+        cout << "Order's destructor" << endl;
+    
 }

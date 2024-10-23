@@ -4,9 +4,9 @@ C++ Programming
 Data Structures and Algorithms
 39.99
 45
-Design Patterns
-49.99
-60
+Unknown
+0
+0
 Artificial Intelligence
 59.99
 90

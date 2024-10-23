@@ -1,12 +1,26 @@
 #pragma once
 #include <vector>
 #include <ctime>
+#include "Person.h"
+#include "user.h"
 #include "Publication.h"
 #include "Reader.h"
 #include "Order.h"
 
-class Administrator {
+using namespace personNamespace;
+
+class Administrator : public Person, User{
 public:
+
+    Administrator(const string& name,
+        int age,
+        const string& surname,
+        const string& middlename,
+        const string& birthDate,
+        const string& email);
+
+    ~Administrator();
+
     // Додавання нової публікації
     void addPublication(const Publication& publication, std::vector<Publication>& publications);
 
